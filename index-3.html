@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simple Notepad</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5}
+header{background:#222;color:#fff;padding:12px;text-align:center;font-size:20px}
+#note{width:calc(100% - 20px);height:78vh;margin:10px;padding:10px;
+font-size:18px;border:1px solid #bbb;border-radius:8px;box-sizing:border-box;
+resize:none;outline:none}
+footer{display:flex;gap:10px;justify-content:center;padding:10px}
+button{padding:10px 18px;border:none;border-radius:8px;cursor:pointer;font-size:16px}
+.clear{background:#d9534f;color:#fff}
+.copy{background:#0275d8;color:#fff}
+.status{text-align:center;color:#555;font-size:14px;padding-bottom:10px}
+</style>
+</head>
+<body>
+<header>📝 Simple Notepad</header>
+
+<textarea id="note" placeholder="இங்கே எழுதத் தொடங்குங்கள்..."></textarea>
+
+<footer>
+<button class="copy" onclick="copyNote()">Copy</button>
+<button class="clear" onclick="clearNote()">Clear</button>
+</footer>
+
+<div class="status" id="status">Auto Saved</div>
+
+<script>
+const note=document.getElementById("note");
+const status=document.getElementById("status");
+
+note.value=localStorage.getItem("simple_note")||"";
+
+note.oninput=function(){
+ localStorage.setItem("simple_note",note.value);
+ status.textContent="Saved ✓";
+ setTimeout(()=>status.textContent="Auto Saved",1000);
+};
+
+function clearNote(){
+ if(confirm("இந்த நோட்டை முழுவதும் அழிக்கவா?")){
+   note.value="";
+   localStorage.removeItem("simple_note");
+   status.textContent="Cleared";
+ }
+}
+
+function copyNote(){
+ navigator.clipboard.writeText(note.value);
+ status.textContent="Copied ✓";
+ setTimeout(()=>status.textContent="Auto Saved",1000);
+}
+</script>
+</body>
+</html>
